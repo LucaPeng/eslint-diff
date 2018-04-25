@@ -1,0 +1,24 @@
+{
+  "name": "precommit-eslint",
+  "version": "0.0.1",
+  "description": "run eslint check before commit for diff code",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LucaPeng/precommit-eslint.git"
+  },
+  "keywords": [
+    "eslint",
+    "pre-commit",
+    "git-hook"
+  ],
+  "author": "LucaPeng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LucaPeng/precommit-eslint/issues"
+  },
+  "homepage": "https://github.com/LucaPeng/precommit-eslint#readme"
+}
