@@ -1,24 +1,62 @@
 {
-  "name": "precommit-eslint",
+  "name": "eslint-diff",
   "version": "0.0.1",
-  "description": "run eslint check before commit for diff code",
-  "main": "index.js",
+  "description": "provide eslint check based on line-level git diff",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "precommit": "lint-staged"
   },
+  "main": "scripts/index.js",
+  "bin": {
+    "eslint-diff": "bin/index.js"
+  },
+  "files": [
+    "bin/",
+    "scripts/",
+    "index.d.ts",
+    "README.md"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LucaPeng/precommit-eslint.git"
+    "url": "git+https://github.com/LucaPeng/eslint-diff.git"
   },
   "keywords": [
     "eslint",
-    "pre-commit",
-    "git-hook"
+    "git",
+    "diff",
+    "line-level"
   ],
   "author": "LucaPeng",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/LucaPeng/precommit-eslint/issues"
+    "url": "https://github.com/LucaPeng/eslint-diff/issues"
   },
-  "homepage": "https://github.com/LucaPeng/precommit-eslint#readme"
+  "homepage": "https://github.com/LucaPeng/eslint-diff#readme",
+  "dependencies": {
+    "@types/node": "^8.9.1",
+    "chalk": "^2.3.0",
+    "lodash": "^4.17.10"
+  },
+  "peerDependencies": {
+    "eslint": "^4.17.0"
+  },
+  "devDependencies": {
+    "@types/eslint": "^4.16.1",
+    "@types/lodash": "^4.14.108",
+    "babel-eslint": "8.2.1",
+    "eslint": "4.17.0",
+    "eslint-config-airbnb-base": "12.1.0",
+    "eslint-config-mfe": "^0.1.1",
+    "eslint-plugin-import": "2.8.0",
+    "eslint-plugin-node": "6.0.0",
+    "eslint-plugin-typescript": "0.8.1",
+    "husky": "0.14.3",
+    "lint-staged": "6.1.0",
+    "typescript": "^2.8.3",
+    "typescript-eslint-parser": "^15.0.0"
+  },
+  "lint-staged": {
+    "src/*/*.{js,ts}": "eslint"
+  }
 }
