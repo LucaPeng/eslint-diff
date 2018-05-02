@@ -1,59 +1,55 @@
 ## eslint-diff
 
-Provide eslint check based on line-level git diff. It's better to work with husky or precommit-eslint.
+提供基于 git diff 进行`行粒度`的 eslint 检查，仅对修改部分进行检查。
 
-[chinese_version](./README_ZH.md)
+## 安装 & 使用
 
-## Installation & Usage
-
-install
+安装
 ``` 
   yarn add eslint-diff
   // npm install eslint-diff
 ```
 
-use
+使用
 ```
   const eslintDiff = require('eslint-diff');
-  // result is instanceof eslint.CLIEngine.lintReport
+  // result 格式和 eslint.CLIEngine.lintReport 一致
   const result = eslintDiff.check({
     path: process.cwd(),
     level: eslintInit.CheckLevel.ERROR,
   });
-  // format
+  // 格式化结果
   console.log(eslintDiff.format(result));
 ```
 
-### CLI
+### 命令行工具
 
-we provide simple cli tool for u. 
+提供简单的命令行工具。
 
-### use globally,
+### 全局使用
 
-install,
+安装,
 ```
   npm install eslint-diff -g
 ```
 
-use:
+使用:
 ```
   eslint-diff --warning --path src/lib
 ```
 
-## work with npm package.json
+## 结合 npm package.json 使用
 
-install,
+安装,
 ```
   npm install eslint-diff -save-dev
 ```
 
-config package.json:
+配置 package.json:
 ```
   scripts: {
     "eslint": "eslint-diff --error"
   }
 ```
 
-then, run `npm run eslint` in terminal.
-
-use husky or precommit-eslint is better.
+然后在 Teminal 下执行 `npm run eslint` 。
