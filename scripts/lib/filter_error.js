@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var get_changed_lines_1 = require("./get_changed_lines");
 var _ = require("lodash");
+var get_changed_lines_1 = require("./get_changed_lines");
+var constants_1 = require("../constants");
 function fixFileStats(fileResult) {
     fileResult.errorCount = 0;
     fileResult.warningCount = 0;
@@ -46,18 +47,26 @@ function isIgnoreFile(result) {
     }
     return true;
 }
-function check(report) {
+function levelFilter(message, level) {
+    if (level === constants_1.CheckLevel.ERROR) {
+        if (!message.fatal && message.severity !== 2) {
+            return false;
+        }
+    }
+    return true;
+}
+function filter(report, level) {
     var newReport = _.assign({}, report);
     newReport.results = newReport.results.filter(function (result) {
         if (isIgnoreFile(result)) {
             return false;
         }
         var changeLinesMap = get_changed_lines_1.default(result.filePath);
-        result.messages = result.messages.filter(function (message) { return (changeLinesMap[message.line || 0]); });
+        result.messages = result.messages.filter(function (message) { return (changeLinesMap[message.line || 0] && levelFilter(message, level)); });
         fixFileStats(result);
         return result.messages.length !== 0;
     });
     fixAllStats(newReport);
     return newReport;
 }
-exports.default = check;
+exports.default = filter;

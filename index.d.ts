@@ -2,9 +2,15 @@
 import { CLIEngine } from 'eslint';
 
 export as namespace eslintDiff;
+export enum CheckLevel {
+  ALL = 1,
+  ERROR,
+  WARNING,
+}
 
 interface CheckConfig {
   path?: string;
+  level?: CheckLevel;
 }
 
 export function check(config: CheckConfig): CLIEngine.LintReport;

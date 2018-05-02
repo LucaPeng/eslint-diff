@@ -1,12 +1,15 @@
 import { CLIEngine } from 'eslint';
 import getChangedFiles from './lib/get_changed_files';
 import filterPassError from './lib/filter_error';
+import { CheckLevel } from './constants';
 
 interface CheckConfig {
   path?: string;
+  level?: CheckLevel;
 }
 
 module.exports = {
+  CheckLevel,
   /**
    * 检查diff信息
    * @param checkConfig {CheckConfig} options
@@ -15,7 +18,9 @@ module.exports = {
   check(checkConfig: CheckConfig): CLIEngine.LintReport | null {
     let {
       path,
+      level,
     } = checkConfig;
+    level = level || CheckLevel.ALL;
     path = path || process.cwd();
     const changedFiles = getChangedFiles(path);
     const jsFiles: string[] = changedFiles.filter((file: string) => (
@@ -26,7 +31,7 @@ module.exports = {
     }
     const cliEngine = new CLIEngine({});
     let report = cliEngine.executeOnFiles(jsFiles);
-    report = filterPassError(report);
+    report = filterPassError(report, level);
     return report;
   },
   /**

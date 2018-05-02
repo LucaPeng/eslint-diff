@@ -1,6 +1,7 @@
-import getChangedLines from './get_changed_lines';
 import * as _ from 'lodash';
 import { CLIEngine, Linter } from 'eslint';
+import getChangedLines from './get_changed_lines';
+import { CheckLevel } from '../constants';
 
 /**
  * 修正文件的统计数字
@@ -14,11 +15,13 @@ function fixFileStats(fileResult: CLIEngine.LintResult) {
 
   fileResult.messages.forEach((message) => {
     if (message.fatal || message.severity === 2) {
+      // error
       fileResult.errorCount++;
       if (message.fix) {
         fileResult.fixableErrorCount++;
       }
     } else {
+      // warning
       fileResult.warningCount++;
       if (message.fix) {
         fileResult.fixableWarningCount++;
@@ -28,7 +31,7 @@ function fixFileStats(fileResult: CLIEngine.LintResult) {
 }
 
 /**
- * 修正report的统计
+ * 修正report的统计数字
  * @param report
  */
 function fixAllStats(report: CLIEngine.LintReport) {
@@ -47,8 +50,8 @@ function fixAllStats(report: CLIEngine.LintReport) {
 
 /**
  * 是否需要忽略的文件
- * @param result
- * @returns {boolean}
+ * @param result {CLIEngine.LintResult} 单个文件的lint结果
+ * @returns {boolean} 是否被忽略
  */
 function isIgnoreFile(result: CLIEngine.LintResult) {
   if (result.warningCount !== 1 || result.errorCount !== 0) {
@@ -64,11 +67,27 @@ function isIgnoreFile(result: CLIEngine.LintResult) {
 }
 
 /**
- * 过滤提交中之前就有的错误
- * @param report {Report}
- * @returns {Report}
+ * lint级别过滤器
+ * @param message {Linter.LintMessage} 单个 message 信息
+ * @param level {CheckLevel} 检查级别
  */
-export default function check(report: CLIEngine.LintReport) {
+function levelFilter(message: Linter.LintMessage, level: CheckLevel) {
+  if (level === CheckLevel.ERROR) {
+    if (!message.fatal && message.severity !== 2) {
+      // warning
+      return false;
+    }
+  }
+  return true;
+}
+
+/**
+ * 过滤提交中之前就有的错误；
+ * @param report {CLIEngine.LintReport} Lint报告对象
+ * @param level {CheckLevel} 检查级别
+ * @returns {CLIEngine.LintReport} 过滤后Lint报告对象
+ */
+export default function filter(report: CLIEngine.LintReport, level: CheckLevel) {
   const newReport = _.assign({}, report);
 
   newReport.results = newReport.results.filter((result) => {
@@ -79,7 +98,7 @@ export default function check(report: CLIEngine.LintReport) {
     const changeLinesMap = getChangedLines(result.filePath);
 
     result.messages = result.messages.filter((message: Linter.LintMessage) => (
-      changeLinesMap[message.line || 0]
+      changeLinesMap[message.line || 0] && levelFilter(message, level)
     ));
 
     fixFileStats(result);
