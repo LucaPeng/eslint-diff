@@ -13,16 +13,13 @@ install
 use
 ```
   const eslintDiff = require('eslint-diff');
-  eslintDiff({
+  // result格式符合 eslint.CLIEngine.lineReport
+  const result = eslintDiff.check({
     path: process.cwd(),
-    blockLevel: eslintInit.BlockLevel.ERROR,
-  }).then(result => {
-    // result = {
-    //   errorCount: 20,
-    //   warningCount: 10,
-    //   fomattedInfo: '...'
-    // }
+    level: eslintInit.CheckLevel.ERROR,
   });
+  // 格式化
+  console.log(eslintDiff.format(result));
 ```
 
 ### CLI
@@ -38,7 +35,7 @@ install,
 
 use:
 ```
-  eslint-diff --warning
+  eslint-diff --warning --path src/lib
 ```
 
 ## work with npm package.json
@@ -51,8 +48,10 @@ install,
 config package.json:
 ```
   scripts: {
-    "eslint-diff": "eslint-diff error"
+    "eslint": "eslint-diff --error"
   }
 ```
+
+then, run `npm run eslint` in terminal.
 
 use husky or precommit-eslint is better.
