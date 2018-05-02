@@ -34,8 +34,6 @@
   },
   "homepage": "https://github.com/LucaPeng/eslint-diff#readme",
   "dependencies": {
-    "@types/node": "^8.9.1",
-    "chalk": "^2.3.0",
     "lodash": "^4.17.10"
   },
   "peerDependencies": {
@@ -44,6 +42,7 @@
   "devDependencies": {
     "@types/eslint": "^4.16.1",
     "@types/lodash": "^4.14.108",
+    "@types/node": "^8.9.1",
     "babel-eslint": "8.2.1",
     "eslint": "4.17.0",
     "eslint-config-airbnb-base": "12.1.0",
