@@ -16,7 +16,7 @@
   // result 格式和 eslint.CLIEngine.lintReport 一致
   const result = eslintDiff.check({
     path: process.cwd(),
-    level: eslintInit.CheckLevel.ERROR,
+    level: eslintDiff.CheckLevel.ERROR,
   });
   // 格式化结果
   console.log(eslintDiff.format(result));

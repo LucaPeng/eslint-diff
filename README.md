@@ -18,7 +18,7 @@ use
   // result is instanceof eslint.CLIEngine.lintReport
   const result = eslintDiff.check({
     path: process.cwd(),
-    level: eslintInit.CheckLevel.ERROR,
+    level: eslintDiff.CheckLevel.ERROR,
   });
   // format
   console.log(eslintDiff.format(result));
